@@ -1,0 +1,6 @@
+---
+# Variables listed here are applicable to dbservers host groups
+
+db_user: gtapi
+db_name: gtapi
+db_password: '{{ vault_db_password }}'

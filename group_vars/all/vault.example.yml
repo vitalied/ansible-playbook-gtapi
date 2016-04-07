@@ -1,0 +1,4 @@
+---
+# Variables listed here are encrypted
+
+vault_db_password: gtapi

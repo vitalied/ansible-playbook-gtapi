@@ -1,0 +1,15 @@
+---
+# Variables listed here are applicable to all host groups
+
+#ansible_user: user
+ansible_port: 12222
+
+system_user: user
+deploy_user: deploy
+
+srv_dir: /srv
+
+app_name: gtapi
+app_domain: api.globaltravel.tech
+
+app_dir: '{{ srv_dir }}/apps/{{ app_name }}'
