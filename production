@@ -1,0 +1,8 @@
+[appservers]
+api.globaltravel.tech
+
+[webservers]
+api.globaltravel.tech
+
+[dbservers]
+api.globaltravel.tech
