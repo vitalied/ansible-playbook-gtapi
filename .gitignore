@@ -6,3 +6,7 @@
 
 .DS_Store
 .idea
+
+group_vars/all/vault.yml
+
+site.retry
