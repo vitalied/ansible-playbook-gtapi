@@ -1,0 +1,10 @@
+---
+# This playbook contains common plays that will be run on all nodes.
+
+# *****   SRV directory   ***** #
+
+- name: create srv directory
+  file:
+    path={{ srv_dir }}
+    state=directory
+  tags: common

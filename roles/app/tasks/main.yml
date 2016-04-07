@@ -1,0 +1,12 @@
+---
+# This playbook contains common plays that will be run on app nodes.
+
+# *****   APPs directories   ***** #
+
+- name: create {{ app_name }} app directory
+  file:
+    path={{ app_dir }}
+    owner={{ deploy_user }}
+    group={{ deploy_user }}
+    state=directory
+  tags: app
