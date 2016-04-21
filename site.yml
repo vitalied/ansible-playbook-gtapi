@@ -1,0 +1,71 @@
+---
+# This playbook deploys the whole application stack in this site.
+
+- name: apply common configuration to all nodes
+  hosts: all
+  remote_user: '{{ system_user }}'
+  become: true
+  tags: common
+
+  roles:
+    - vitalied.ssh
+    - {
+      role: vitalied.ufw,
+      ufw_to_port: [
+        { to_port: '12222', proto: 'tcp', rule: 'limit' },
+        { to_port: '80', proto: 'tcp', rule: 'allow' },
+        { to_port: '443', proto: 'tcp', rule: 'allow' }
+      ]
+    }
+    - vitalied.ntp
+    - common
+
+
+- name: deploy db servers and configure the databases
+  hosts: dbservers
+  remote_user: '{{ system_user }}'
+  become: true
+  tags: db
+
+  roles:
+    - vitalied.postgresql
+    - {
+      role: vitalied.postgresql-vhosts,
+      postgresql_vhosts_db: '{{ db_name }}',
+      postgresql_vhosts_user: '{{ db_user }}',
+      postgresql_vhosts_password: '{{ db_password }}'
+    }
+
+
+- name: deploy and configure app servers
+  hosts: appservers
+  remote_user: '{{ system_user }}'
+  become: true
+  tags: app
+
+  roles:
+    - vitalied.nodejs
+    - vitalied.memcached
+    - vitalied.redis
+    - vitalied.user
+    - vitalied.ruby
+    - app
+
+
+- name: deploy and configure web servers
+  hosts: webservers
+  remote_user: '{{ system_user }}'
+  become: true
+  tags: web
+
+  roles:
+    - {
+      role: vitalied.nginx-passenger,
+      nginx_passenger_max_pool_size: 25,
+      nginx_passenger_min_instances: 25
+    }
+    - {
+      role: vitalied.nginx-vhosts,
+      nginx_vhosts_ssl_protocol: 'spdy',
+      nginx_vhosts_use_passenger: true
+    }
